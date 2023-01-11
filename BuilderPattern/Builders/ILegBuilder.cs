@@ -1,12 +1,12 @@
 ﻿using BuilderPattern.Entities;
 
-namespace BuilderPattern.Services
+namespace BuilderPattern.Builders
 {
     public interface ILegBuilder
     {
         ILegBuilder BuildDetail(string facilitiesStation, DateTime departureDate, DateTime arrivalDate);
-        ILegBuilder BuildDepartureCity(Action<ICityBuilder> builder);
-        ILegBuilder BuildArrivalCity(Action<ICityBuilder> builder);
+        ILegBuilder BuildDepartureCity(string departure);
+        ILegBuilder BuildArrivalCity(string arrival);
         Leg Build();
     }
 }

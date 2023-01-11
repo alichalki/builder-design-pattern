@@ -1,32 +1,27 @@
-﻿using BuilderPattern.Entities;
+﻿using BuilderPattern.Builders;
+using BuilderPattern.Entities;
 
 namespace BuilderPattern.Services.Implementations
 {
-    public class TicketBuilder : ITicketBuilder
+    public class TicketFlightBuilder : ITicketBuilder
     {
         private Ticket _ticket;
-        public TicketBuilder()
+        public TicketFlightBuilder()
         {
             _ticket = new Ticket();
             _ticket.Stops = new List<Leg>();
         }
 
-        public ITicketBuilder BuildDeparture(Action<ICityBuilder> builder)
+        public ITicketBuilder BuildDeparture(string departure)
         {
-            var cityBuilder = new CityBuilder();
-            builder(cityBuilder);
-
-            _ticket.Departure = cityBuilder.Build();
+            _ticket.Departure = departure;
 
             return this;
         }
 
-        public ITicketBuilder BuildArrival(Action<ICityBuilder> builder)
+        public ITicketBuilder BuildArrival(string arrival)
         {
-            var cityBuilder = new CityBuilder();
-            builder(cityBuilder);
-
-            _ticket.Arrival = cityBuilder.Build();
+            _ticket.Arrival = arrival;
 
             return this;
         }
@@ -44,15 +39,24 @@ namespace BuilderPattern.Services.Implementations
 
         public ITicketBuilder BuildStops(Action<ILegBuilder> builder)
         {
-            var legBuilder = new LegBuilder();
+            var legBuilder = new LegFlightBuilder();
             builder(legBuilder);
 
             _ticket.Stops.Add(legBuilder.Build());
 
             return this;
         }
+        public ITicketBuilder BuildType()
+        {
+            _ticket.IsFlightTicket = true;
+            _ticket.IsTrainTicket = false;
+            _ticket.TransportationType = Common.StationTypeEnume.Flight;
 
-        
+            return this;
+        }
+
+
         public Ticket Build() => _ticket;
+
     }
 }

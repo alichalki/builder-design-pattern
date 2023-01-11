@@ -1,12 +1,12 @@
-﻿using BuilderPattern.Entities;
-using System.Xml.Linq;
+﻿using BuilderPattern.Builders;
+using BuilderPattern.Entities;
 
 namespace BuilderPattern.Services.Implementations
 {
-    public class LegBuilder : ILegBuilder
+    public class LegFlightBuilder : ILegBuilder
     {
         private Leg _leg;
-        public LegBuilder()
+        public LegFlightBuilder()
         {
             _leg = new Leg();
         }
@@ -17,24 +17,21 @@ namespace BuilderPattern.Services.Implementations
             _leg.FacilitiesStation = facilitiesStation;
             _leg.DepartureDate = departureDate;
             _leg.ArrivalDate = arrivalDate;
+            _leg.StationType = Common.StationTypeEnume.Flight;
 
             return this;
         }
 
-        public ILegBuilder BuildDepartureCity(Action<ICityBuilder> builder)
+        public ILegBuilder BuildDepartureCity(string departure)
         {
-            var cityBuilder = new CityBuilder();
-            builder(cityBuilder);
-            _leg.DepartureCityDetail = cityBuilder.Build();
+            _leg.Departure = departure;
 
             return this;
         }
 
-        public ILegBuilder BuildArrivalCity(Action<ICityBuilder> builder)
+        public ILegBuilder BuildArrivalCity(string arrival)
         {
-            var cityBuilder = new CityBuilder();
-            builder(cityBuilder);
-            _leg.ArrivalCityDetail = cityBuilder.Build();
+            _leg.Arrival = arrival;
 
             return this;
         }
